@@ -1,0 +1,19 @@
+{
+    "name": "railton98/routes-phpoo",
+    "authors": [
+        {
+            "name": "Railton L Rodrigues",
+            "email": "railtonleal98@gmail.com"
+        }
+    ],
+    "require": {
+        "league/plates": "^3.4",
+        "symfony/var-dumper": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        },
+        "files": []
+    }
+}
