@@ -2,7 +2,7 @@
 
 namespace app\controllers;
 
-use League\Plates\Engine;
+use app\core\Request;
 
 class UserController extends Controller
 {
@@ -13,6 +13,7 @@ class UserController extends Controller
 
     public function update($params)
     {
-        dd('update', $params);
+        $fields = Request::only('firstName');
+        dd($fields);
     }
 }
