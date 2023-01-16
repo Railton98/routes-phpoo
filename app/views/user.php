@@ -1,14 +1,12 @@
 <?php $this->layout('master', ['title' => $title]) ?>
 
-<?php $this->start('css') ?>
-    <link rel="stylesheet" href="/css/styles.css">
-<?php $this->stop() ?>
-
 <h1>User</h1>
-<p>Hello, <?php echo $this->e($name) ?></p>
 
-<?php $this->start('js') ?>
-    <script>
-        alert('User Page');
-    </script>
-<?php $this->stop() ?>
+<form action="/user/update/33" method="post">
+    <input type="text" name="firstName" id="firstName" value="Railton">
+    <input type="text" name="lastName" id="lastName" value="Leal">
+    <input type="email" name="email" id="email" value="railtonleal98@gmail.com">
+    <input type="password" name="password" id="password" value="123">
+
+    <button type="submit">Salvar</button>
+</form>

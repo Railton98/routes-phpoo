@@ -6,13 +6,13 @@ use League\Plates\Engine;
 
 class UserController extends Controller
 {
-    public function edit($params)
+    public function edit()
     {
-        $templates = new Engine('../app/views');
+        $this->view('user', ['title' => 'Editar User']);
+    }
 
-        $this->view('user', [
-            'title' => 'Página do User',
-            'name' => 'Railton',
-        ]);
+    public function update($params)
+    {
+        dd('update', $params);
     }
 }
