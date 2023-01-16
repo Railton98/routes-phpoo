@@ -2,11 +2,17 @@
 
 namespace app\controllers;
 
-class UserController
+use League\Plates\Engine;
+
+class UserController extends Controller
 {
     public function edit($params)
     {
-        dd($params[0]);
-        dd('user controller index');
+        $templates = new Engine('../app/views');
+
+        $this->view('user', [
+            'title' => 'Página do User',
+            'name' => 'Railton',
+        ]);
     }
 }
