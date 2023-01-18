@@ -40,7 +40,7 @@ abstract class Model
     public function findBy(string $field = '', string $value = '')
     {
         try {
-            $sql = (!$this->filters)
+            $sql = (!empty($this->filters))
                 ? "SELECT $this->fields FROM $this->table WHERE $field = :$field;"
                 : "SELECT $this->fields FROM $this->table $this->filters;";
 
@@ -50,6 +50,22 @@ abstract class Model
             $prepare->execute(!$this->filters ? [$field => $value] : []);
 
             return $prepare->fetchObject(get_called_class());
+        } catch (PDOException $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function delete(string $field = '', string|int $value = '')
+    {
+        try {
+            $sql = (!empty($this->filters))
+                ? "DELETE FROM $this->table $this->filters;"
+                : "DELETE FROM $this->table WHERE $field = :$field;";
+
+            $connection = Connection::connect();
+
+            $prepare = $connection->prepare($sql);
+            return $prepare->execute(empty($this->filters) ? [$field => $value] : []);
         } catch (PDOException $e) {
             dd($e->getMessage());
         }
