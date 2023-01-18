@@ -33,4 +33,42 @@ class Request
 
         return $fieldsPost;
     }
+
+    public static function excepts(string|array $excepts)
+    {
+        $fieldsPost = self::all();
+
+        if (is_array($excepts)) {
+            foreach ($excepts as $except) {
+                unset($fieldsPost[$except]);
+            }
+        }
+
+        if (is_string($excepts)) {
+            unset($fieldsPost[$excepts]);
+        }
+
+        return $fieldsPost;
+    }
+
+    public  static function query(string $name)
+    {
+        if (!isset($_GET[$name])) {
+            throw new Exception("Não existe a query string $name");
+        }
+
+        return $_GET[$name];
+    }
+
+    public static function toJson(array $data)
+    {
+        return json_encode($data);
+    }
+
+    public static function toArray(string $data)
+    {
+        if (isJson($data)) {
+            return json_decode($data);
+        }
+    }
 }
