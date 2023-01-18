@@ -34,9 +34,20 @@ class Filters
         $this->filters['order'] = " ORDER BY $field $order";
     }
 
+    public function join(
+        string $foreingTable,
+        string $joinTable1,
+        string $operator,
+        string $joinTable2,
+        string $joinType = 'INNER JOIN'
+    ) {
+        $this->filters['join'][] = "$joinType $foreingTable ON $joinTable1 $operator $joinTable2";
+    }
+
     public function dump()
     {
-        $filter = !empty($this->filters['where']) ? ' where ' . implode(' ', $this->filters['where']) : '';
+        $filter = !empty($this->filters['join']) ? implode(' ', $this->filters['join']) : '';
+        $filter .= !empty($this->filters['where']) ? ' where ' . implode(' ', $this->filters['where']) : '';
         $filter .= $this->filters['order'] ?? '';
         $filter .= $this->filters['limit'] ?? '';
 
