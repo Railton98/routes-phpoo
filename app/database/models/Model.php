@@ -22,6 +22,23 @@ abstract class Model
         $this->filters = $filters->dump();
     }
 
+    public function create(array $data)
+    {
+        try {
+            $sql = "INSERT INTO $this->table (";
+            $sql .= implode(',', array_keys($data)) . ') VALUES (';
+            $sql .= ':' . implode(',:', array_keys($data)) . ');';
+
+            $connection = Connection::connect();
+
+            $prepare = $connection->prepare($sql);
+
+            return $prepare->execute($data);
+        } catch (PDOException $e) {
+            dd($e->getMessage());
+        }
+    }
+
     public function fetchAll()
     {
         try {
