@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function update($params)
     {
-        $fields = Request::excepts('password');
+        $fields = Request::only('password');
         dd($fields);
     }
 }
