@@ -9,8 +9,12 @@ class HomeController extends Controller
 {
     public function index()
     {
+        $filters = new Filters;
+        $filters->where('id', '>', 20);
+
         $user = new User;
-        $userFound = $user->first();
+        $user->setFilters($filters);
+        $userFound = $user->count();
         dd($userFound);
 
         $title = 'Home';
