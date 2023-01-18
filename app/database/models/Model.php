@@ -2,7 +2,9 @@
 
 namespace app\database\models;
 
+use app\database\Connection;
 use app\database\Filters;
+use PDO;
 use PDOException;
 
 abstract class Model
@@ -24,7 +26,30 @@ abstract class Model
     {
         try {
             $sql = "SELECT $this->fields FROM $this->table $this->filters;";
-            dd($sql);
+
+            $connection = Connection::connect();
+
+            $query = $connection->query($sql);
+
+            return $query->fetchAll(PDO::FETCH_CLASS, get_called_class());
+        } catch (PDOException $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function findBy(string $field = '', string $value = '')
+    {
+        try {
+            $sql = (!$this->filters)
+                ? "SELECT $this->fields FROM $this->table WHERE $field = :$field;"
+                : "SELECT $this->fields FROM $this->table $this->filters;";
+
+            $connection = Connection::connect();
+
+            $prepare = $connection->prepare($sql);
+            $prepare->execute(!$this->filters ? [$field => $value] : []);
+
+            return $prepare->fetchObject(get_called_class());
         } catch (PDOException $e) {
             dd($e->getMessage());
         }

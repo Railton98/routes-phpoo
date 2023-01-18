@@ -10,13 +10,12 @@ class HomeController extends Controller
     public function index()
     {
         $filters = new Filters;
-        $filters->where('id', '>', 50, 'AND');
-        $filters->orderBy('id', 'DESC');
-        $filters->limit(5);
+        $filters->where('id', '>', 0);
 
         $user = new User;
         $user->setFilters($filters);
-        $user->fetchAll();
+        $userFound = $user->findBy();
+        dd($userFound);
 
         $title = 'Home';
 
