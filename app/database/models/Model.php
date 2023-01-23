@@ -2,11 +2,11 @@
 
 namespace app\database\models;
 
-use app\database\Connection;
-use app\database\Filters;
-use app\database\Pagination;
 use PDO;
 use PDOException;
+use app\database\Filters;
+use app\database\Connection;
+use app\database\Pagination;
 
 abstract class Model
 {
@@ -26,6 +26,7 @@ abstract class Model
 
     public function setPagination(Pagination $pagination)
     {
+        $pagination->setTotalItems($this->count());
         $this->pagination = $pagination->dump();
     }
 
