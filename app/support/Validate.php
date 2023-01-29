@@ -11,12 +11,12 @@ class Validate
 
     public function validate(array $validationsFields)
     {
+        $inputsValidation = [];
         foreach ($validationsFields as $field => $validation) {
             $havePipes = str_contains($validation, '|');
 
+            $param = '';
             if (!$havePipes) {
-                $param = '';
-
                 if (str_contains($validation, ':')) {
                     [$validation, $param] = explode(':', $validation);
                 }
@@ -25,7 +25,20 @@ class Validate
                     throw new Exception("O método $validation não existe na validação");
                 }
 
-                $this->$validation($param);
+                $inputsValidation[$field] = $this->$validation($param);
+            } else {
+                $validations = explode('|', $validation);
+                foreach ($validations as $validation) {
+                    if (str_contains($validation, ':')) {
+                        [$validation, $param] = explode(':', $validation);
+                    }
+
+                    if (!method_exists($this, $validation)) {
+                        throw new Exception("O método $validation não existe na validação");
+                    }
+
+                    $inputsValidation[$field] = $this->$validation($param);
+                }
             }
         }
     }

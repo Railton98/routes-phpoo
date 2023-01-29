@@ -11,11 +11,11 @@ trait Validations
 
     public function required()
     {
-        dd('required');
+        echo 'required';
     }
     
     public function maxLen($param)
     {
-        dd($param);
+        echo 'maxlen';
     }
 }
