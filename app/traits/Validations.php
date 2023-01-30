@@ -2,6 +2,8 @@
 
 namespace app\traits;
 
+use app\core\Request;
+
 trait Validations
 {
     public function email()
@@ -9,13 +11,23 @@ trait Validations
         dd('email');
     }
 
-    public function required()
+    public function required($field)
     {
-        echo 'required';
+        $data = Request::input($field);
+        
+        if (empty($data)) {
+            return null;
+        }
     }
-    
-    public function maxLen($param)
+
+    public function maxLen($field, $param)
     {
-        echo 'maxlen';
+        $data = Request::input($field);
+        
+        if (strlen($data) > $param) {
+            return null;
+        }
+
+        dd($data);
     }
 }

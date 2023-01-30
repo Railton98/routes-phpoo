@@ -25,7 +25,7 @@ class Validate
                     throw new Exception("O método $validation não existe na validação");
                 }
 
-                $inputsValidation[$field] = $this->$validation($param);
+                $inputsValidation[$field] = $this->$validation($field, $param);
             } else {
                 $validations = explode('|', $validation);
                 foreach ($validations as $validation) {
@@ -37,7 +37,11 @@ class Validate
                         throw new Exception("O método $validation não existe na validação");
                     }
 
-                    $inputsValidation[$field] = $this->$validation($param);
+                    $inputsValidation[$field] = $this->$validation($field, $param);
+
+                    if (empty($inputsValidation[$field])) {
+                        break;
+                    }
                 }
             }
         }
