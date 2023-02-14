@@ -6,7 +6,7 @@
 <form action="/user/update" method="post">
     <?php echo getToken() ?>
     <input type="text" name="firstName" id="firstName" value="Railton">
-    <?php echo flash('firstName') ?>
+    <?php echo flash('firstName', 'color: red') ?>
     <input type="text" name="lastName" id="lastName" value="Leal">
     <?php echo flash('lastName') ?>
     <input type="email" name="email" id="email" value="railtonleal98@gmail.com">

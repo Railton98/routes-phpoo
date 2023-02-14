@@ -14,11 +14,15 @@ class UserController extends Controller
     public function update($params)
     {
         $validate = new Validate;
-        $validate->validate([
-            // 'firstName' => 'required',
-            // 'lastName' => 'required',
-            // 'email' => 'required|email',
+        $validated = $validate->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'email|required',
             'password' => 'maxLen:10|required',
         ]);
+
+        if (!$validated) {
+            return redirect('/user/12');
+        }
     }
 }

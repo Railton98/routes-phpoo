@@ -11,7 +11,7 @@ class Flash
         }
     }
 
-    public static function get(string $index): string
+    public static function get(string $index)
     {
         if (isset($_SESSION[$index])) {
             $value = $_SESSION[$index];
