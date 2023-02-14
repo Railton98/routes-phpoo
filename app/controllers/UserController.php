@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\database\models\User;
 use app\support\Validate;
 
 class UserController extends Controller
@@ -17,7 +18,7 @@ class UserController extends Controller
         $validated = $validate->validate([
             'firstName' => 'required',
             'lastName' => 'required',
-            'email' => 'email|required',
+            'email' => 'email|required|unique:'. User::class,
             'password' => 'maxLen:10|required',
         ]);
 

@@ -7,6 +7,23 @@ use app\support\Flash;
 
 trait Validations
 {
+    public function unique($field, $param)
+    {
+        $data = Request::input($field);
+
+        /** @var \app\database\models\User $model */
+        $model = new $param;
+        $model->setFields('id');
+        $registerFound = $model->findBy($field, $data);
+
+        if ($registerFound) {
+            Flash::set($field, "O valor $data já está registrado");
+            return null;
+        }
+
+        return strip_tags($data, ['<p>', '<b>', '<ul>', '<span>', '<em>']);
+    }
+
     public function email($field)
     {
         if (!filter_input(INPUT_POST, $field, FILTER_VALIDATE_EMAIL)) {
