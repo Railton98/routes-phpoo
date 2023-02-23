@@ -2,6 +2,7 @@
 
 namespace app\support;
 
+use Exception;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class Email
@@ -10,7 +11,7 @@ class Email
     private string $from;
     private string $fromName;
     private string $subject;
-    private string $template;
+    private string $template = '';
     private array $templateData = [];
     private string $message;
     private PHPMailer $mail;
@@ -41,12 +42,12 @@ class Email
         return $this;
     }
 
-    public function template()
+    public function template(string $template, array $templateData): Email
     {
-    }
+        $this->template = $template;
+        $this->templateData = $templateData;
 
-    public function templateData()
-    {
+        return $this;
     }
 
     public function subject(string $subject): Email
@@ -76,9 +77,27 @@ class Email
         }
     }
 
+    private function sendWithTemplate()
+    {
+        $file = '../app/views/emails/' . $this->template . '.html';
+
+        if (!file_exists($file)) {
+            throw new Exception("o template $this->template não existe");
+        }
+
+        $template = file_get_contents($file);
+
+        $this->templateData['message'] = $this->message;
+
+        foreach ($this->templateData as $key => $data) {
+            $dataTemplate["@{$key}"] = $data;
+        }
+
+        return str_replace(array_keys($dataTemplate), array_values($dataTemplate), $template);
+    }
+
     public function send()
     {
-        // Recipients
         $this->mail->setFrom($this->from, $this->fromName);
 
         $this->addAddresses();
@@ -86,7 +105,7 @@ class Email
         $this->mail->isHTML(true);
         $this->mail->CharSet = 'UTF-8';
         $this->mail->Subject = $this->subject;
-        $this->mail->Body    = $this->message;
+        $this->mail->Body    = empty($this->template) ? $this->message : $this->sendWithTemplate();
         $this->mail->AltBody = $this->message;
 
         return $this->mail->send();

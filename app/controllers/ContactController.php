@@ -31,6 +31,7 @@ class ContactController extends Controller
             ->to('tecks@dev.com')
             ->message($validated['message'])
             ->subject($validated['subject'])
+            ->template('contact', ['name' => 'Railton'])
             ->send();
 
         if ($sent) {
